@@ -138,27 +138,27 @@ def _create_augment_pipeline():
 
     aug_pipe = iaa.Sequential(
         [
-            iaa.Fliplr(0.5), 
-            iaa.Flipud(0.2), 
+            # iaa.Fliplr(0.5), 
+            # iaa.Flipud(0.2), 
             iaa.Affine(translate_percent={"x": (-0.1, 0.1), "y": (-0.1, 0.1)}),
             iaa.OneOf([iaa.Affine(scale=(0.8, 1.2)),
                         iaa.Affine(rotate=(-10, 10)),
                         iaa.Affine(shear=(-10, 10))]),
 
-                        sometimes(iaa.OneOf([
-                               iaa.GaussianBlur((0, 3.0)),
-                               iaa.AverageBlur(k=(2, 7)),
-                               iaa.MedianBlur(k=(3, 11)),
-                           ])),
-                           sometimes(iaa.Sharpen(alpha=(0, 1.0), lightness=(0.75, 1.5))),
-                           sometimes(iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.05 * 255), per_channel=0.5)),
-                           sometimes(iaa.OneOf([
-                               iaa.Dropout((0.01, 0.1), per_channel=0.5),
-                               iaa.CoarseDropout((0.03, 0.15), size_percent=(0.02, 0.05), per_channel=0.2),
-                           ])),
-                           sometimes(iaa.Add((-10, 10), per_channel=0.5)),  
-                           sometimes(iaa.Multiply((0.5, 1.5), per_channel=0.5)), 
-                           sometimes(iaa.ContrastNormalization((0.5, 2.0), per_channel=0.5)) 
+            sometimes(iaa.OneOf([
+                    iaa.GaussianBlur((0, 2.0)),
+                    iaa.AverageBlur(k=(0, 2)),
+                    iaa.MedianBlur(k=(0, 2)),
+            ])),
+            sometimes(iaa.Sharpen(alpha=(0, 1.0), lightness=(0.75, 1.5))),
+            sometimes(iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.05 * 255), per_channel=0.5)),
+            sometimes(iaa.OneOf([
+                iaa.Dropout((0.01, 0.1), per_channel=0.5),
+                iaa.CoarseDropout((0.03, 0.15), size_percent=(0.02, 0.05), per_channel=0.2),
+            ])),
+            sometimes(iaa.Add((-10, 10), per_channel=0.5)),  
+            sometimes(iaa.Multiply((0.5, 1.5), per_channel=0.5)), 
+            sometimes(iaa.ContrastNormalization((0.5, 2.0), per_channel=0.5)) 
         ],
         random_order=True
     )

@@ -43,6 +43,7 @@ def train(model,
     print('Current training session folder is {}'.format(path))
     os.makedirs(path)
     save_weights_name = os.path.join(path, basename + '.h5')
+    save_weights_name = 'mobilenet7_5.{epoch:03d}.h5'
     save_plot_name = os.path.join(path, basename + '.jpg')
     save_weights_name_ctrlc = os.path.join(path, basename + '_ctrlc.h5')
     print('\n')
@@ -89,7 +90,7 @@ def train(model,
     checkpoint = ModelCheckpoint(save_weights_name, 
                                  monitor=metrics, 
                                  verbose=1, 
-                                 save_best_only=True, 
+                                 save_best_only=False, 
                                  mode='auto', 
                                  period=1)
                                  
@@ -111,7 +112,7 @@ def train(model,
                                             verbose=1)
 
     if network.__class__.__name__ == 'YOLO' and metrics =='mAP':
-        callbacks = [tensorboard_callback, map_evaluator_cb, warm_up_lr]
+        callbacks = [tensorboard_callback, map_evaluator_cb, warm_up_lr, ModelCheckpoint]
     else:
         callbacks= [early_stop, checkpoint, warm_up_lr, tensorboard_callback] 
 
