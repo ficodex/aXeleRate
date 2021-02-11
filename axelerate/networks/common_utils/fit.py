@@ -92,7 +92,7 @@ def train(model,
                                  verbose=1, 
                                  save_best_only=False, 
                                  mode='auto', 
-                                 period=1)
+                                 period=2)
                                  
     reduce_lr = ReduceLROnPlateau(monitor=metrics, factor=0.2,
                               patience=10, min_lr=0.00001,verbose=1)
@@ -112,7 +112,7 @@ def train(model,
                                             verbose=1)
 
     if network.__class__.__name__ == 'YOLO' and metrics =='mAP':
-        callbacks = [tensorboard_callback, map_evaluator_cb, warm_up_lr, ModelCheckpoint]
+        callbacks = [tensorboard_callback, map_evaluator_cb, warm_up_lr, checkpoint]
     else:
         callbacks= [early_stop, checkpoint, warm_up_lr, tensorboard_callback] 
 
