@@ -24,12 +24,10 @@ def train(model,
          network=None,
          metrics="val_loss"):
     """A function that performs training on a general keras model.
-
     # Args
         model : keras.models.Model instance
         loss_func : function
             refer to https://keras.io/losses/
-
         train_batch_gen : keras.utils.Sequence instance
         valid_batch_gen : keras.utils.Sequence instance
         learning_rate : float
@@ -43,7 +41,6 @@ def train(model,
     print('Current training session folder is {}'.format(path))
     os.makedirs(path)
     save_weights_name = os.path.join(path, basename + '.h5')
-    save_weights_name = path + '/mobilenet7_5.{epoch:03d}.h5'
     save_plot_name = os.path.join(path, basename + '.jpg')
     save_weights_name_ctrlc = os.path.join(path, basename + '_ctrlc.h5')
     print('\n')
@@ -90,9 +87,9 @@ def train(model,
     checkpoint = ModelCheckpoint(save_weights_name, 
                                  monitor=metrics, 
                                  verbose=1, 
-                                 save_best_only=False, 
+                                 save_best_only=True, 
                                  mode='auto', 
-                                 period=2)
+                                 period=1)
                                  
     reduce_lr = ReduceLROnPlateau(monitor=metrics, factor=0.2,
                               patience=10, min_lr=0.00001,verbose=1)
@@ -112,7 +109,7 @@ def train(model,
                                             verbose=1)
 
     if network.__class__.__name__ == 'YOLO' and metrics =='mAP':
-        callbacks = [tensorboard_callback, checkpoint, map_evaluator_cb, warm_up_lr]
+        callbacks = [tensorboard_callback, map_evaluator_cb, warm_up_lr]
     else:
         callbacks= [early_stop, checkpoint, warm_up_lr, tensorboard_callback] 
 
@@ -143,4 +140,3 @@ def _print_time(process_time):
         print("{:d}-seconds to train".format(int(process_time)))
     else:
         print("{:d}-mins to train".format(int(process_time/60)))
-
