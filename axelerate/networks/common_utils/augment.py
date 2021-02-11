@@ -161,7 +161,7 @@ def _create_augment_pipeline():
             somtimes_priority(iaa.OneOf(
                 [
                     iaa.GammaContrast((0.5, 2.0)),
-                    iaa.SigmoidContrast((gain=(3,10), cutoff=(0.4, 0.6))),
+                    iaa.SigmoidContrast(gain=(3,10), cutoff=(0.4, 0.6)),
                     iaa.LogContrast(gain=(0.6, 1.4))
                 ]
             )),
